@@ -15,6 +15,8 @@ namespace Minesweeper
         private const double ratioOfMinesToSize = 0.1;
         private Form gameArea;
         private GameController game;
+        private int winningNumberOfReveals;
+        private int revealedItems;
         /*
          * Constructs a size*size graph with appropriate mine, empty and number items
          */
@@ -24,6 +26,7 @@ namespace Minesweeper
             this.game = game;
             initializeGraph(size);
             int numOfMines = (int)(ratioOfMinesToSize * (double)size * (double)size);
+            winningNumberOfReveals = size * size - numOfMines;
             placeMines(numOfMines);
             placeNumsAndEmptyItems();
         }
@@ -32,6 +35,8 @@ namespace Minesweeper
        
         public void click(int xCor, int yCor)
         {
+            if (graph[yCor][xCor].IsFlagged() || graph[yCor][xCor].IsRevealed())
+                return;
             if (graph[yCor][xCor].GetType().Equals(typeof(Mine)))
             {
                 endGame(xCor, yCor);
@@ -42,6 +47,20 @@ namespace Minesweeper
             }
         }
         
+        public void flag(int xCor, int yCor)
+        {
+            if (graph[yCor][xCor].IsRevealed())
+                return;
+            if (graph[yCor][xCor].IsFlagged())
+            {
+                game.unFlag(xCor, yCor);
+            } else
+            {
+                game.toggleFlag(xCor, yCor);
+                
+            }
+            graph[yCor][xCor].flag();
+        }
 
         private void initializeGraph(int size)
         {
@@ -101,8 +120,7 @@ namespace Minesweeper
         private void endGame(int xCor, int yCor)
         {
             game.revealEnd(xCor, yCor);
-            //
-
+            game.win();
         }
 
         private void revealAllValid(int xCor, int yCor)
@@ -120,11 +138,14 @@ namespace Minesweeper
     
                 if (!inBounds(y, x) || isMine(y, x))
                     continue;
-                if (graph[y][x].IsRevealed())
+                if (graph[y][x].IsRevealed() || graph[y][x].IsFlagged())
                     continue;
                 graph[y][x].reveal();
+                if (++revealedItems == winningNumberOfReveals)
+                    game.win();
                 int num = graph[y][x].getNumber();
                 game.reveal(x, y, num);
+
                 if (graph[y][x].GetType().Equals(typeof(NumberItem)))
                     continue;
                 addAllSurronding(q, x, y);

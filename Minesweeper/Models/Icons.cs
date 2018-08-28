@@ -40,6 +40,21 @@ namespace Minesweeper.Models
             icon.Load(filePath + "\\num" + num + ".jpg");
         }
 
+        public void toggleFlag(int xCor, int yCor)
+        {
+            var icon = icons[yCor][xCor];
+            var projectPath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+            string filePath = Path.Combine(projectPath, "Resources");
+            icon.Load(filePath + "\\flag.jpg");
+        }
+
+        public void unFlag(int xCor, int yCor)
+        {
+            var projectPath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+            string filePath = Path.Combine(projectPath, "Resources");
+            var icon = icons[yCor][xCor];
+            icon.Load(filePath + "\\testing.jpg");
+        }
 
         private void render(Form gameArea)
         {
@@ -72,7 +87,15 @@ namespace Minesweeper.Models
         {
             PictureBox icon = (PictureBox)sender;
             Point p = icon.Location;
-            game.click(p.X / 20, p.Y / 20);
+            if (e.Button == MouseButtons.Left)
+            {
+                game.click(p.X / 20, p.Y / 20);
+            } else
+            {
+                game.flag(p.X / 20, p.Y / 20);
+            }
+            
         }
+
     }
 }

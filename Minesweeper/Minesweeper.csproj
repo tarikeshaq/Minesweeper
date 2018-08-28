@@ -85,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\num0.jpg" />
+    <Content Include="Resources\flag.jpg" />
     <Content Include="Resources\num1.jpg" />
     <Content Include="Resources\num2.jpg" />
     <Content Include="Resources\num3.jpg" />

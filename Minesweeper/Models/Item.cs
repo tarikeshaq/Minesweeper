@@ -14,6 +14,7 @@ namespace Minesweeper
         public Item()
         {
             isRevealed = false;
+            isFlagged = false;
         }
 
 
@@ -27,10 +28,20 @@ namespace Minesweeper
         {
             return isRevealed;
         }
+        public bool IsFlagged()
+        {
+            return isFlagged;
+        }
+
+        public void flag()
+        {
+            isFlagged = !isFlagged;
+        }
         public abstract int getNumber();
 
         public abstract void setNumber(int number);
         protected bool isRevealed;
+        protected bool isFlagged;
         protected int num;
     }
 }

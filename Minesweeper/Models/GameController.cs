@@ -33,5 +33,29 @@ namespace Minesweeper.Models
         {
             icons.reveal(xCor, yCor, num);
         }
+
+        public void flag(int xCor, int yCor)
+        {
+            minesweeper.flag(xCor, yCor);
+        }
+
+        public void toggleFlag(int xCor, int yCor)
+        {
+            icons.toggleFlag(xCor, yCor);
+        }
+
+        public void unFlag(int xCor, int yCor)
+        {
+            icons.unFlag(xCor, yCor);
+        }
+        public void win()
+        {
+            using (Form winPopup = new Form())
+            {
+                
+                winPopup.ShowDialog();
+            }
+            
+        }
     }
 }
